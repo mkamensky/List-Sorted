@@ -1,0 +1,51 @@
+# NAME
+
+List::Sorted - Class representing a list that is always sorted
+
+# VERSION
+
+version 0.001
+
+# SYNOPSIS
+
+    my $l = new List::Sorted;
+    $l->insert(2,1,3);
+    say $l->[1]; # says 2
+
+# DESCRIPTION
+
+This class represents a list that remains sorted.
+
+# METHODS
+
+## new
+
+    $l = new List::Sorted [cmp => sub {...}];
+
+Create a new object. If _cmp_ is given, it should be a coderef that compares 
+two elements in the list (as in the `comparator` argument in 
+[List::BinarySearch](http://search.cpan.org/perldoc?List::BinarySearch)). If it is not given, it defaults to the class's cmp() 
+method (which can be overriden in derived classes).
+
+# OVERLOADING
+
+    # get a List::Sorted $l
+    my @data = @$l; # @data is a regular (sorted) array
+
+Objects can be dereferenced to obtain the underlying array. Note that this 
+should not be used to modify the array, since the list must remain sorted.
+
+# SEE ALSO
+
+[List::BinarySearch](http://search.cpan.org/perldoc?List::BinarySearch)
+
+# AUTHOR
+
+Moshe Kamensky <kamensky@cpan.org>
+
+# COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Moshe Kamensky.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.

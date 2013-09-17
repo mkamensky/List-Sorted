@@ -93,4 +93,6 @@ sub load {
 
 L<List::BinarySearch>
 
+=cut
+
 1;
