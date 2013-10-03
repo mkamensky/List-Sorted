@@ -17,7 +17,7 @@ This class represents a list that remains sorted.
 
 =cut
 
-use List::BinarySearch qw(bsearch_custom_pos);
+use List::BinarySearch qw(0.14 binsearch_pos);
 
 =head1 OVERLOADING
 
@@ -33,11 +33,11 @@ use overload '@{}' => 'as_array';
 
 =method new
 
-    $l = new List::Sorted [cmp => sub {...}];
+    $l = new List::Sorted [ccmp => sub {...}];
 
-Create a new object. If I<cmp> is given, it should be a coderef that compares 
+Create a new object. If I<ccmp> is given, it should be a coderef that compares 
 two elements in the list (as in the C<comparator> argument in 
-L<List::BinarySearch>). If it is not given, it defaults to the class's cmp() 
+L<List::BinarySearch>). If it is not given, it defaults to the class's L</ccmp> 
 method (which can be overriden in derived classes).
 
 =cut
@@ -47,23 +47,27 @@ sub new {
     my %self = @_;
     $self{'_data'} = [];
     my $self = bless \%self => $class;
-    $self->{'cmp'} //= sub { $self->cmp(@_) };
+    $self->{'ccmp'} //= sub { $self->ccmp(@_) };
+    $self->{'_cmp'} = sub { $self->{'ccmp'}($a,$b) };
     $self
 }
 
 sub as_array { $_[0]->{'_data'} }
 
-sub cmp { $_[1] <=> $_[2] }
+sub ccmp { $_[1] <=> $_[2] }
 
 sub find_pos {
     my ($self, $i) = @_;
-    my $pos = &bsearch_custom_pos( $self->{'cmp'}, $i, $self->{'_data'})
+    my $pos = &binsearch_pos($self->{'_cmp'}, $i, $self->{'_data'})
 }
 
 sub insert {
-    my ($self, $i) = @_;
-    my $pos = $self->find_pos($i);
-    splice @{$self->{'_data'}}, $pos, 0, $i
+    my $self = shift;
+    for my $i (@_) {
+        my $pos = $self->find_pos($i);
+        splice @{$self->{'_data'}}, $pos, 0, $i;
+    }
+    $self
 }
 
 sub store {
