@@ -2,5 +2,7 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+        * Added docs
+        * Added tests
         * Converted to new syntax in List::BinarySearch 0.12
         * Fixed a bug in insert() when adding more than one element
