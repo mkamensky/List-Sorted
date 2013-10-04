@@ -29,7 +29,7 @@ should not be used to modify the array, since the list must remain sorted.
 
 =cut
 
-use overload '@{}' => 'as_array';
+use overload '@{}' => '_as_array';
 
 =method new
 
@@ -52,14 +52,39 @@ sub new {
     $self
 }
 
-sub as_array { $_[0]->{'_data'} }
+sub _as_array { $_[0]->{'_data'} }
+
+=method ccmp
+
+    if ( $self->ccmp($a,$b) ) { ... }
+
+The method used to compare elements for sorting.
+
+=cut
 
 sub ccmp { $_[1] <=> $_[2] }
+
+=method find_pos
+    
+    $pos = $self->find_pos($i)
+
+Find the position of the argument $i in the list. If the element is not in 
+the list, finds the place where it can be inserted to keep the list sorted.
+
+=cut
 
 sub find_pos {
     my ($self, $i) = @_;
     my $pos = &binsearch_pos($self->{'_cmp'}, $i, $self->{'_data'})
 }
+
+=method insert
+
+    $self->insert(3,1,2);
+
+Insert the given elements into the list, keeping it sorted. Returns the list.
+
+=cut
 
 sub insert {
     my $self = shift;
@@ -70,6 +95,18 @@ sub insert {
     $self
 }
 
+=method store
+
+    $err = $self->store("foo.yml", 0.1);
+
+Store the content of the list in the given file. The second argument is a 
+data version, which should be changed when the structure of the elements 
+stored in the list changes.
+
+Returns the error, if any. This method requires L<YAML::Any>.
+
+=cut
+
 sub store {
     eval { require YAML::Any };
     return $@ if $@;
@@ -78,6 +115,18 @@ sub store {
     $@
 }
 
+=method load
+
+    $err = $self->load("foo.yml", 0.1);
+
+Load the content of the list from the given file, assuming the data version 
+in the file is exactly the one given. Any previous content of $self is 
+removed. Returns the error, if any.
+
+This method requires L<YAML::Any>.
+
+=cut
+    
 sub load {
     eval { require YAML::Any };
     return $@ if $@;
@@ -95,7 +144,7 @@ sub load {
 
 =head1 SEE ALSO
 
-L<List::BinarySearch>
+L<List::BinarySearch>, L<YAML::Any>
 
 =cut
 

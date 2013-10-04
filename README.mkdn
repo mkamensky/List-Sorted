@@ -27,6 +27,45 @@ two elements in the list (as in the `comparator` argument in
 [List::BinarySearch](http://search.cpan.org/perldoc?List::BinarySearch)). If it is not given, it defaults to the class's ["ccmp"](#ccmp) 
 method (which can be overriden in derived classes).
 
+## ccmp
+
+    if ( $self->ccmp($a,$b) ) { ... }
+
+The method used to compare elements for sorting.
+
+## find\_pos
+
+    $pos = $self->find_pos($i)
+
+Find the position of the argument $i in the list. If the element is not in 
+the list, finds the place where it can be inserted to keep the list sorted.
+
+## insert
+
+    $self->insert(3,1,2);
+
+Insert the given elements into the list, keeping it sorted. Returns the list.
+
+## store
+
+    $err = $self->store("foo.yml", 0.1);
+
+Store the content of the list in the given file. The second argument is a 
+data version, which should be changed when the structure of the elements 
+stored in the list changes.
+
+Returns the error, if any. This method requires [YAML::Any](http://search.cpan.org/perldoc?YAML::Any).
+
+## load
+
+    $err = $self->load("foo.yml", 0.1);
+
+Load the content of the list from the given file, assuming the data version 
+in the file is exactly the one given. Any previous content of $self is 
+removed. Returns the error, if any.
+
+This method requires [YAML::Any](http://search.cpan.org/perldoc?YAML::Any).
+
 # OVERLOADING
 
     # get a List::Sorted $l
@@ -37,7 +76,7 @@ should not be used to modify the array, since the list must remain sorted.
 
 # SEE ALSO
 
-[List::BinarySearch](http://search.cpan.org/perldoc?List::BinarySearch)
+[List::BinarySearch](http://search.cpan.org/perldoc?List::BinarySearch), [YAML::Any](http://search.cpan.org/perldoc?YAML::Any)
 
 # AUTHOR
 
