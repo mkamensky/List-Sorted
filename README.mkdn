@@ -20,11 +20,11 @@ This class represents a list that remains sorted.
 
 ## new
 
-    $l = new List::Sorted [cmp => sub {...}];
+    $l = new List::Sorted [ccmp => sub {...}];
 
-Create a new object. If _cmp_ is given, it should be a coderef that compares 
+Create a new object. If _ccmp_ is given, it should be a coderef that compares 
 two elements in the list (as in the `comparator` argument in 
-[List::BinarySearch](http://search.cpan.org/perldoc?List::BinarySearch)). If it is not given, it defaults to the class's cmp() 
+[List::BinarySearch](http://search.cpan.org/perldoc?List::BinarySearch)). If it is not given, it defaults to the class's ["ccmp"](#ccmp) 
 method (which can be overriden in derived classes).
 
 # OVERLOADING

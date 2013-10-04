@@ -17,7 +17,7 @@ This class represents a list that remains sorted.
 
 =cut
 
-use List::BinarySearch qw(0.14 binsearch_pos);
+use List::BinarySearch 0.14 qw(binsearch_pos);
 
 =head1 OVERLOADING
 
